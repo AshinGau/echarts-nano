@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>echarts - demo</title>
+    <script src="echarts.common.min.js"></script>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script>
+        $.extend({
+            csv: function (url) {
+                let $def = $.Deferred(),
+                    $pos = $.post(url);
+                $pos.done(record => {
+                    record = record.split(/\n/);
+                    let title = record[0].split(",").map(d => d.trim());
+                    record.shift();
+                    let data = [];
+                    for(let i in record){
+                        let t = record[i].split(",").map(d => d.trim());
+                        for(let y in t){
+                            if (!data[i]) data[i] = {};
+                            data[i][title[y]] = t[y];
+                        }
+                    }
+                    $def.resolve(title, data);
+                });
+                $pos.fail(err => { $def.reject(err); });
+                return $def.promise();
+            }
+        });
+    </script>
+</head>
+<body style="width:1000px;margin:auto;">
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width: 800px;height:500px;"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    let myChart = echarts.init(document.getElementById('main'));
+    myChart.showLoading();
+    // 指定图表的配置项和数据
+    let option = {
+        title: {
+            text: '预约机时累积分布图'
+        },
+        tooltip : {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: {
+            align: 'left',
+            orient: 'vertical',
+            right: 'left',
+            top: '30%',
+            tooltip: {
+                show: true
+            },
+            formatter: name => echarts.format.truncateText(name, 80, '14px Microsoft Yahei', '…')
+        },
+        grid: {
+            left: '3%',
+            right: '130',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                type : 'category',
+                boundaryGap : false
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value'
+            }
+        ]
+    };
+
+    $.csv('equipment.csv').done((title, data) => {
+        option.xAxis[0].data = data.map(d => d.date);
+        title.shift();
+        let legend = title;
+        option.legend.data = legend.map(d => {
+            return {
+                name: d,
+                icon: 'rect'
+            }
+        });
+        let series = legend.map(lg => {
+            let tmp = {
+                name: lg,
+                type:'line',
+                stack: '总量',
+                areaStyle: {normal: {}},
+                //data:[],
+                label: {
+                    emphasis: {
+                        show: true,
+                        position: 'top',
+                        textStyle:{
+                            fontSize: 15
+                        }
+                    }
+                }
+            };
+            tmp.data = data.map(rd => rd[lg]);
+            return tmp;
+        });
+        option.series = series;
+
+        myChart.hideLoading();
+        myChart.setOption(option);
+    })
+
+</script>
+</body>
+</html>
