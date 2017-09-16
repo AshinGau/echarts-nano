@@ -12,6 +12,7 @@
     <script src="http://testp.ylab.cn:80/manager/theme/default/assets/js/reserveReportListByUser.js" type="text/javascript"></script>
     <!--begin echarts-->
     <script src="echarts.common.min.js"  type="text/javascript"></script>
+    <script src="wonderland.js"  type="text/javascript"></script>
     <!--end echarts-->
     <title>易约 - 管理员 - 使用报告</title>
     <!--begin echarts-->
@@ -214,15 +215,16 @@
                     <label for="show-all">显示设备详情</label>
                 </p>
                 <p id="stackArea" style="width:1000px; height:450px;"></p>
-                <div style="padding-top:25px;">
-                    <div style="display:inline-block;width:600px">
+                <div style="padding-top:25px;width:1000px;">
+                    <div style="width:50%;float:left;">
                         <p style="font-weight:bold;">设备使用分布</p>
                         <p id="pieArea" style="width:600px; height:400px;"></p>
                     </div>
-                    <div style="display:inline-block;width:600px">
+                    <div style="width:50%;float:left;">
                         <p style="font-weight:bold;">用户组使用分布</p>
-                        <p id="groupArea" style="width:600px; height:400px;"></p>
+                        <p id="groupArea" style="width:500px; height:400px;"></p>
                     </div>
+                    <div style="clear:both"></div>
                 </div>
                 <h3 style="border-top:1px dashed #ccc;">设备使用详情</h3>
                 <div>

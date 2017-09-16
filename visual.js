@@ -21,15 +21,15 @@ function getInstruInfo(url){
     $pos.fail(err => { $def.reject(err); });
     return $def.promise();
 }
-let stackChart = echarts.init(document.getElementById('stackArea'));
+let stackChart = echarts.init(document.getElementById('stackArea'), 'wonderland');
 stackChart.showLoading();
-let pieChart = echarts.init(document.getElementById('pieArea'));
+let pieChart = echarts.init(document.getElementById('pieArea'), 'wonderland');
 pieChart.showLoading();
-let groupChart = echarts.init(document.getElementById('groupArea'));
+let groupChart = echarts.init(document.getElementById('groupArea'), 'wonderland');
 groupChart.showLoading();
-let barChart = echarts.init(document.getElementById('barArea'));
+let barChart = echarts.init(document.getElementById('barArea'), 'wonderland');
 barChart.showLoading();
-let rankChart = echarts.init(document.getElementById('rankArea'));
+let rankChart = echarts.init(document.getElementById('rankArea'), 'wonderland');
 rankChart.showLoading();
 let stackOption = {
     tooltip : {
